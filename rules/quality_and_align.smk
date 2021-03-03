@@ -46,12 +46,14 @@ rule sortbam:
 	input:
 		rules.align.output
 	output:
-		"samples/align/sorted/{sample}_sorted.bam",
-		"samples/align/sorted/{sample}_sorted.bam.bai"
+		bam="samples/align/sorted/{sample}_sorted.bam",
+		index="samples/align/sorted/{sample}_sorted.bam.bai"
 	conda:
 		"../envs/bwa.yaml"
 	threads: 4
 	message:
 		"""--- sorting {wildcards.sample} ---"""
 	shell:
-		"samtools sort -@ {threads} -m '2G' {input} > {output[0]}; samtools index -b {output[0]}"
+		"samtools sort -@ {threads} -m '2G' {input} > {output.bam}; samtools index -b {output.bam}"
+
+

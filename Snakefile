@@ -17,7 +17,13 @@ rule all:
     input:
         # The first rule should define the default target files
         # Subsequent target rules can be specified below. They should start with all_*.
-        expand("samples/align/sorted/{sample}_sorted.bam", sample=SAMPLES),
-		
+        #expand("samples/align/sorted/{sample}_sorted.bam", sample=SAMPLES),
+        expand("results/{sample}_LBBC.txt", sample=SAMPLES),
+	    expand("results/{sample}_kraken_output.txt", sample=SAMPLES),
+	    expand("results/{sample}_mash_output.txt", sample=SAMPLES),
+
 
 include: "rules/quality_and_align.smk"
+include: "rules/low_biomass_background_correction.smk"
+include: "rules/fast_read_screening.smk"
+

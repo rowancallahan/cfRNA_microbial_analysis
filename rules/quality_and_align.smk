@@ -1,7 +1,7 @@
 rule trimming:
 	input:
-		forward_strand = "samples/raw/{sample}_R1.fastq.gz",
-		reverse_strand = "samples/raw/{sample}_R2.fastq.gz"
+		forward_strand = "samples/raw/{sample}_R1.fq",
+		reverse_strand = "samples/raw/{sample}_R2.fq"
 	output:
 		forward_paired = "samples/trim/{sample}_R1_paired.fastq.gz",
 		reverse_paired = "samples/trim/{sample}_R2_paired.fastq.gz",

@@ -3,9 +3,10 @@ rule kraken:
         read1 = "samples/raw/{sample}_R1.fq",
         read2 = "samples/raw/{sample}_R2.fq",
     output:
-        "results/{sample}_kraken_output.txt",
+        main= "results/{sample}_kraken_output.txt",
+        report = "results/{sample}_kraken_report.txt",
     params:
-        kraken_db = "/home/groups/CEDAR/callahro/reference_data/"
+        kraken_db = "/home/groups/CEDAR/callahro/reference_data/",
     threads: 8
     resources:
         mem_mb = 70000 #lambda wildcards, attempt: attempt *3000 + 70000
@@ -13,7 +14,7 @@ rule kraken:
         "../envs/kraken2.yaml"
     shell:
         """
-        kraken2 --paired --threads {threads} --db {params.kraken_db} {input.read1} {input.read2} > {output}
+        kraken2 --paired --threads {threads} --db {params.kraken_db} {input.read1} {input.read2} --use-names --report {output.report} --report-zero-counts --output {output.main}
         """
 
 rule mash:

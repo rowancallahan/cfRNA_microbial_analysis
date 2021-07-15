@@ -8,50 +8,52 @@
 #Trimming is not necessary if you end up changing the aligner to bowtie 2 which performs soft clipping
 ADAPTERS: "/home/groups/MaxsonLab/callahro/adapters/nextera_adapters.fasta" 
 
-#The genome that you will be aligning everything to this is the most important value to check
-#below is the alignment reference for mouse genome mm10
-REFERENCE: "/home/groups/MaxsonLab/indices/mm10/mm10.fa"
-#below is the alignment reference for human genome 38a
-#alignment_reference: "/home/groups/MaxsonLab/indices/GRch38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta"
 
-#the location where the raw samples can be found
-raw_sample_folder: "/home/groups/MaxsonLab/input-data/MOLM_C57A_ATAC_merged_fastq/"
+##############################################################################
+# Genome and project-specific files that will change from project-to-project
+##############################################################################
 
-#the size of the genome to be used for genome size effect cancellatino
-#Below this line is the default size for mouse
-macs_genome_size: "1.87e9" #mouse default size
-#And this is the size used for human genomes
-#macs_genome_size: "2.7e9" #human default genome size
+# GTF file for the genome build you would like to use
 
-#The location of the blacklist file that we will use to filter out regions that overlap a blacklist
-#below is the default blacklist for mouse genome mm10
-blacklist_file: "/home/groups/MaxsonLab/indices/mm10/mm10.blacklist.v2.bed"
-#below this line is the default blacklist for human genome hg38
-#blacklist_file: "/home/groups/MaxsonLab/indices/GRch38/hg38.blacklist.v2.bed"
+gtf_file:
+  /home/groups/CEDAR/tools/cfRNA_resources/gencode.v27.annotation.gtf
 
+# Pre-built star indexes for hg38
+star_index:
+  /home/groups/CEDAR/roskamsh/tools/cfRNA_star_index
 
-#the name of the genome that you are using for usage
-genome_name: "mm10"
+#this is used by te transcripts to decide where the TE are
+genome:
+  /home/groups/CEDAR/tools/cfRNA_resources/GRCh38.primary_assembly.genome.fa
 
-#prefix that allows you to split out files that you care about
-prefix: "C57"
+####################################################################
+# Tool-specific files that will not change from project-to-project
+####################################################################
 
-readforward_postfix: "_merged_1.fq.gz" #"_CKDL190141440-1a_H53YYBBXX_L2_1.fq.gz"
-readreverse_postfix: "_merged_2.fq.gz" #"_CKDL190141440-1a_H53YYBBXX_L2_2.fq.gz"
-sample_work_path: "../atac_c57" #_all_samples" #"../samples"
+# Pre-built genome indexes for various organisms which we will screen against to look for contamination
+conf:
+  /home/groups/CEDAR/tools/FastQ_Screen_Genomes/fastq_screen.conf
+# Paths to various tools which are used in this pipeline
+star_tool:
+  /home/exacloud/lustre1/CEDAR/tools/STAR/tags/2.5.3a/bin/Linux_x86_64/STAR
+sickle_tool:
+  /home/groups/CEDAR/tools/sickle
+picard_tool:
+  /home/groups/CEDAR/tools/picard-tools-1.119/MarkDuplicates.jar
+bamstats_tool:
+  /home/groups/CEDAR/roskamsh/tools/bamstats_bin/bamstats
 
-#This is no longer needed unless you have multiple lanes that you wish to merge
-#If you do you can add a lane prefix to this config file and change the code in filter_shift_align.smk
-#and this pipeline will merge different lanes together
-LANES:
-  - ""
-  - ""
+##########################################
+# Important project-specific paths/files
+##########################################
 
-metadata_file: "./C57_ATAC_metadata"
+# Metadata needed for differential expression analysis
+omic_meta_data:
+  #/home/groups/CEDAR/callahro/projects/outside_cfRNA_data/cfRNA-seq-pipeline/yu_fastq_list_better_groups.txt 
 
-#if there are samples that you want to include or exclude that match a certain regular expression
-#You can write that regular expression here and the pipeline will include or exclude them
-#include_samples_regex: ".*24.*"
-#exclude_samples_regex: ".*24Q2.*" 
-
-
+#############################################################################################
+# Project-specific specifications you will need to make prior to submission of the pipeline
+#############################################################################################
+project_id:
+  "microbial_read_analysis"
+#
